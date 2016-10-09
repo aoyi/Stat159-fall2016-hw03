@@ -1,0 +1,9 @@
+residual_sum_squares
+
+total_sum_squares
+
+r_squared
+
+f_statistic
+
+residual_std_error

@@ -47,6 +47,10 @@ stat159-fall2016-hw03/
     	report.pdf
 ```
 
+## Instruction to Reproduce the Report
+
+To reproduce the result, 
+
 
 ## Contributor
 
