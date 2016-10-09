@@ -2,20 +2,23 @@
 data_set <- read.csv("data/Advertising.csv")
 data_output_file <- "data/eda-output.txt"
 
-lm <- lm(Sales ~ TV + Radio + Newspaper, data = data_set)
-save(lm, file = "data/regression.RData")
-summary(lm)
+multi_reg <- lm(Sales ~ TV + Radio + Newspaper, data = data_set)
+lm_sales_TV <- lm(Sales ~ TV, data = data_set)
+lm_sales_Radio <- lm(Sales ~ Radio, data = data_set)
+lm_sales_Newspaper <- lm(Sales ~ Newspaper, data = data_set)
+save(multi_reg, lm_sales_Newspaper, lm_sales_Radio, lm_sales_TV, file = "data/regression.RData")
+summary(multi_reg)
 
 png("images/residual-plot.png")
-plot(lm, which = 1)
+plot(multi_reg, which = 1)
 dev.off()
 
 png("images/normal-qq-plot.png")
-plot(lm, which = 2)
+plot(multi_reg, which = 2)
 dev.off()
 
 png("images/scale-location-plot.png")
-plot(lm, which = 3)
+plot(multi_reg, which = 3)
 dev.off()
 
 scatterplot_generator <- function (data1, data2, var_name1, var_name2) {

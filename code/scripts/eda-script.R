@@ -24,7 +24,7 @@ output_stats(data_set$TV, "TV", data_output_file)
 output_stats(data_set$Radio, "Radio", data_output_file)
 output_stats(data_set$Newspaper, "Newspaper", data_output_file)
 output_stats(data_set$Sales, "Sales", data_output_file)
-
+cat("Correlation Matrix \n\n", file = "data/eda-output.txt", append = TRUE)
 write.table(cor_matrix, file ="data/eda-output.txt", append = TRUE, sep = " ")
 
 sink()

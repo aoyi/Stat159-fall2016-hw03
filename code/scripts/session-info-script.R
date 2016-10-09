@@ -1,9 +1,6 @@
 
 library(xtable)
 
-
-sink(file = session-info.txt)
-
-cat(sessionInfo())
-
+sink(file = "session-info.txt")
+sessionInfo()
 sink()

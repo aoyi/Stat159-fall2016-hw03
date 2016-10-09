@@ -1,0 +1,64 @@
+---
+title: "Multiple Regression Analysis"
+author: "Aoyi Shan"
+date: "Oct 12, 2016"
+---
+
+## Abstract
+
+In this report, we summarize the steps we took toward replicating the results in Chapter 3, Linear Regression, from the book "An Introduction to Statistical Learning" by Gareth James, Deniela Witten, Trevor Hastie and Robert Tibshirani. In this project, we apply computational toolkits such as lm and summary function, graphic devices such as scatterplot matrix and residual plots and essential elements that enable a reproducible workflow to reproduce this multiple regression analysis. 
+
+## Introduction
+
+The main purpose of this project is to predict sales with 3 predictors, advertising budget in TV, newspaper and radio. Running a multiple regression model will provide us with great insights about the relationship between those variables and the regression coefficients represent the relative pairwise strength. After we run the multiple regression model, we can interpret key statistics such as slope, intercept, t-statistics and $R^2$ to determine the quality of the regression and offer advice on how to improve sales by effectively managing its advertising budget. 
+
+## Data
+
+The data set we used in the analysis can be downloaded from http://www-bcf.usc.edu/~gareth/ISL/Advertising.csv. It contains four columns, sales and the advertising budgets for three different types of media, TV, newspaper and radio. TV represents the TV Advertising budget in thousands of dollars, and similar units are apply to newspaper and radio columns and Sales is the corresponding product sales in thousands of units in 200 different markets. 
+
+## Methodology
+
+We start by setting up the multiple linear regression function with TV, newspaper and radio as independent variables and Sales as the dependent variable:
+
+$Sales = \beta_0 + \beta_1*TV + \beta_2*Radio + \beta_3*newspaper + e$
+
+In this equatioin, $\beta_0$ is the intercept and each $\beta_j$ for j > 0 quantifies the association between the regressor $X_j$ and the response $Y$. In order to fit in a plane that is as close as possible to the 200 data points we have and minimize the residuals, the estimator for the slope and intercept should be obtained by running a regression model with the criterion of minimizing the sum of squared vertical distances between each observation and the plane.
+
+## Results
+
+```{r results= 'asis', echo = FALSE}
+library(xtable)
+load("../data/regression.RData")
+print(xtable(summary(lm_sales_TV), caption = "Simple Regression of Sales on TV"), comment = FALSE)
+print(xtable(summary(lm_sales_Newspaper), caption = "Simple Regression of Sales on Newspaper"), comment = FALSE)
+print(xtable(summary(lm_sales_Radio), caption = "Simple Regression of Sales on Radio"), comment = FALSE)
+print(xtable(summary(multi_reg), caption = "Multiple Regression of Sales on TV, Radio and Newspaper"), comment = FALSE)
+```
+
+
+From the table, we can see that the estimated slope is 0.05, which means that for every addition 1000 dollars we spend on TV advertising, on average, we expect to see 47.5 units increase in sales. The intercept can be interpreted as when we don't spend any money on TV advertising, we expect the sale to be 7032 units. We have large t-values and small p-values for both the slope and the intercept which imply statistical significance. So based on the regression output, we can conclude that there exists a relationship between the advertising budget and sales. 
+
+```{r results= 'asis', echo = FALSE}
+load("../data/correlation-matrix.RData")
+print(xtable(cor_matrix, caption = "Correlation Matrix", comment = FALSE))
+```
+
+
+```{r results= 'asis', echo = FALSE}
+data_set <- read.csv("../data/Advertising.csv")
+load("../data/function.RData")
+
+Statistics <- c("Residual Standard Error", "R-square", "F-Statistics")
+Value <- c(residual_std_error(multi_reg, data_set$Sales), r_squared(multi_reg, data_set$Sales), f_statistic(multi_reg, data_set$Sales, 3))
+print(xtable(data.frame(Statistics, Value), caption = "Regression Quality Statistics"), comment = FALSE)
+```
+
+We can see that $R^2 = 0.6119$, which means that 61.19% of the variation in Sales can be explained by the change in TV advertising. In addition, correlation coefficient equals the square root of $R^2$ which is 0.78. This implies a strong relationship between the two variables as well. 
+
+\includegraphics[width=300pt]{../images/residual-plot.png}
+
+From the graph we can see that there is an obvious relationship between X and Y and the fitted regression line seems to represent the positive relationship pretty well. However, the data is heteroskedasticity since the variance of residuals is smaller for small values of X and more spread out for large values. Therefore, it violates an important assumption in simple linear regression since we assume the data is homoskedasticity when we initially set up the expression for the appropriate estimators. 
+
+## Conclusions
+
+By running linear regression with the data set the book provides, we are able to replicate the result and arrive at the conclusion that there exists a strong linear relationship between the TV advertising budget and sales. With statistically significant slope and a reasonable $R^2$, we can conclude that it is beneficial to the sales when we invest more money on TV advertising. 

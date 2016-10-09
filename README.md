@@ -47,10 +47,13 @@ stat159-fall2016-hw03/
     	report.pdf
 ```
 
-## Instruction to Reproduce the Report
+## Reproduction Steps
 
-To reproduce the result, 
+To reproduce the report:
 
+1. Clone this project
+
+2. Run `make` in the terminal to regenerate all the output files, graphs and report. 
 
 ## Contributor
 
