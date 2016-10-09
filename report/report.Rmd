@@ -2,6 +2,9 @@
 title: "Multiple Regression Analysis"
 author: "Aoyi Shan"
 date: "Oct 12, 2016"
+output: pdf_document
+header-includes: 
+- \usepackage{float}
 ---
 
 ## Abstract
@@ -14,7 +17,7 @@ The main purpose of this project is to predict sales with 3 predictors, advertis
 
 ## Data
 
-The data set we used in the analysis can be downloaded from http://www-bcf.usc.edu/~gareth/ISL/Advertising.csv. It contains four columns, sales and the advertising budgets for three different types of media, TV, newspaper and radio. TV represents the TV Advertising budget in thousands of dollars, and similar units are apply to newspaper and radio columns and Sales is the corresponding product sales in thousands of units in 200 different markets. 
+The data set we used in the analysis can be downloaded from http://www-bcf.usc.edu/~gareth/ISL/Advertising.csv. It contains four columns, sales and the advertising budgets for three different types of media, TV, newspaper and radio. TV represents the TV Advertising budget in thousands of dollars, and similar units are apply to newspaper and radio columns and Sales is the corresponding product sales in thousands of units. 
 
 ## Methodology
 
@@ -22,43 +25,66 @@ We start by setting up the multiple linear regression function with TV, newspape
 
 $Sales = \beta_0 + \beta_1*TV + \beta_2*Radio + \beta_3*newspaper + e$
 
-In this equatioin, $\beta_0$ is the intercept and each $\beta_j$ for j > 0 quantifies the association between the regressor $X_j$ and the response $Y$. In order to fit in a plane that is as close as possible to the 200 data points we have and minimize the residuals, the estimator for the slope and intercept should be obtained by running a regression model with the criterion of minimizing the sum of squared vertical distances between each observation and the plane.
+In this equatioin, $\beta_0$ is the intercept, each $\beta_j$ for j > 0 quantifies the association between the regressor $X_j$ and the response $Y$ and $e$ is the error term. In order to fit in a plane that is as close as possible to all the data points we have and minimize the residuals, the estimator for the slope and intercept should be obtained by running a regression model with the criterion of minimizing the sum of squared vertical distances between each observation and the plane.
 
 ## Results
 
 ```{r results= 'asis', echo = FALSE}
 library(xtable)
 load("../data/regression.RData")
-print(xtable(summary(lm_sales_TV), caption = "Simple Regression of Sales on TV"), comment = FALSE)
-print(xtable(summary(lm_sales_Newspaper), caption = "Simple Regression of Sales on Newspaper"), comment = FALSE)
-print(xtable(summary(lm_sales_Radio), caption = "Simple Regression of Sales on Radio"), comment = FALSE)
-print(xtable(summary(multi_reg), caption = "Multiple Regression of Sales on TV, Radio and Newspaper"), comment = FALSE)
+options(xtable.comment = FALSE,
+        xtable.table.placement = "H")
+print(xtable(summary(lm_sales_TV), caption = "Simple Regression of Sales on TV"))
+print(xtable(summary(lm_sales_Newspaper), caption = "Simple Regression of Sales on Newspaper"))
+print(xtable(summary(lm_sales_Radio), caption = "Simple Regression of Sales on Radio"))
+
 ```
 
+Those 3 tables are the resulting coefficients when we fit a simple linear regression for each predictor. For every addition 1000 dollars we spend on TV advertising, on average, we expect to see `r format(1000 * lm_sales_TV$coefficients[2], digits = 3)` units increase in sales, while if we invest the same amount in newspaper or Radio, we expect to see an increase in sales by `r format(1000 * lm_sales_Newspaper$coefficients[2], digits = 3)` or `r format(1000 * lm_sales_Radio$coefficients[2], digits = 3)` units respectively. Therefore, we can conclude that radio advertising is the most efficient if we run three separate simple linear regressions. 
 
-From the table, we can see that the estimated slope is 0.05, which means that for every addition 1000 dollars we spend on TV advertising, on average, we expect to see 47.5 units increase in sales. The intercept can be interpreted as when we don't spend any money on TV advertising, we expect the sale to be 7032 units. We have large t-values and small p-values for both the slope and the intercept which imply statistical significance. So based on the regression output, we can conclude that there exists a relationship between the advertising budget and sales. 
+However, this method ignores the effect of the other two media in predicting and it is highly possible that those three predictors are correlated. To obtain a better estimate, we extend the model by including 3 predictors and running a multiple regression to determine the coefficients. 
+
+```{r results= 'asis', echo = FALSE}
+print(xtable(summary(multi_reg), caption = "Multiple Regression of Sales on TV, Radio and Newspaper"))
+```
+
+Based on this regression output, for a given amount of radio and newspaper advertising, on average, investing an additional 1000 dollars in TV is associated with an increase in sales by `r format(1000 * multi_reg$coefficients[2], digits = 3)` units. And in a similar manner, if we fix the budget for TV and newspaper, we predict that an additional 1000 dollars increase in Radio budget will lead to a `r format(1000 * multi_reg$coefficients[3], digits = 3)` units increase in sales. 
+
+Besides, we can also see that the coefficient between sales and TV and radio are statistically significant, while it is a weak relationship between newspaper and sales since the coefficent comes with a large p-value. The correlation matrix provides us with an explanation.
 
 ```{r results= 'asis', echo = FALSE}
 load("../data/correlation-matrix.RData")
-print(xtable(cor_matrix, caption = "Correlation Matrix", comment = FALSE))
+print(xtable(format(cor_matrix, digits = 5), caption = "Correlation Matrix"))
 ```
 
+The correlation matrix indicates that the correlation between advertising budget in radio and newspaper is `r format(cor_matrix[2, 3], digits = 3)`. This implies that those two medias are often used together. When the newspaper advertising budget increases, it singals that we also have a higher budget in radio advertising, and that is the factor leading to an increase in sales, not newspaper.  
 
 ```{r results= 'asis', echo = FALSE}
 data_set <- read.csv("../data/Advertising.csv")
 load("../data/function.RData")
 
 Statistics <- c("Residual Standard Error", "R-square", "F-Statistics")
-Value <- c(residual_std_error(multi_reg, data_set$Sales), r_squared(multi_reg, data_set$Sales), f_statistic(multi_reg, data_set$Sales, 3))
-print(xtable(data.frame(Statistics, Value), caption = "Regression Quality Statistics"), comment = FALSE)
+RSE <- format(residual_std_error(multi_reg, data_set$Sales), digits = 4)
+R_square <- format(r_squared(multi_reg, data_set$Sales), digits = 3)
+f <- format(f_statistic(multi_reg, data_set$Sales, 3), digits = 4)
+
+Value <- c(RSE, R_square, f)
+print(xtable(data.frame(Statistics, Value), caption = "Regression Quality Statistics"))
 ```
 
-We can see that $R^2 = 0.6119$, which means that 61.19% of the variation in Sales can be explained by the change in TV advertising. In addition, correlation coefficient equals the square root of $R^2$ which is 0.78. This implies a strong relationship between the two variables as well. 
+We can see that Residual Standard Error is `r RSE`, which means the typical error the model is making in predicting the sales is `r RSE` units. Then, $R^2 =$ `r R_square`, which means that `r as.numeric(R_square) * 100`% of the variation in Sales can be explained by the change in advertising budget, which implies that our multiple regression model fits the data very well. F-statistics is used in the hypothesis testing process to determine whether all the coefficients are 0. If there is no relationship between the response and predictors, F-Statistics should be closer to 1. Here, since we have a large value for F-Statistic, we can conclude that there exists a relationship between sales and advertising budgets. 
+
 
 \includegraphics[width=300pt]{../images/residual-plot.png}
 
-From the graph we can see that there is an obvious relationship between X and Y and the fitted regression line seems to represent the positive relationship pretty well. However, the data is heteroskedasticity since the variance of residuals is smaller for small values of X and more spread out for large values. Therefore, it violates an important assumption in simple linear regression since we assume the data is homoskedasticity when we initially set up the expression for the appropriate estimators. 
+From the graph we can see that there is an obvious relationship between X and Y and the fitted multiple regression line seems to represent the relationship pretty well. 
 
 ## Conclusions
 
-By running linear regression with the data set the book provides, we are able to replicate the result and arrive at the conclusion that there exists a strong linear relationship between the TV advertising budget and sales. With statistically significant slope and a reasonable $R^2$, we can conclude that it is beneficial to the sales when we invest more money on TV advertising. 
+By running multiple regression with the data set the book provides, we are able to replicate the result and arrive at several conclusions:
+
+1. Based on the multiple regression coefficient, only advertising budget in TV and radio contribute to predicting sales. As we explained with the correlation matrix, advertising in newspaper is correlated with the budget of radio, and doesn't help with promoting sales. 
+
+2. A large $R^2$ value indicates that the model fit the data very well since most of the variation in the response can be explained by the change in advertising budgets. 
+
+3. RSE represents the typical error the model is making in the prediction and a relatively small RES indicates that the model we come up with can achieve reasonable accuracy. 
