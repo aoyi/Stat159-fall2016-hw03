@@ -47,6 +47,5 @@ residual_std_error <- function(reg_obj, data) {
   sqrt(residual_sum_squares(reg_obj, data)/(length(data) - 2))
 }
 
-save.image(file = "data/function.RData")
 
 

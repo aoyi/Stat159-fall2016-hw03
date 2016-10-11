@@ -1,25 +1,32 @@
-all: eda regression report
+# Run "make" to reproduce report
 
-report: report/report.Rmd data/regression.RData data/correlation-matrix.RData images/residual-plot.png function 
+.PHONY: data all clean
+
+OUTPUT_PDF = report.pdf
+OUTPUT_HTML = report.html
+
+all: clean sessionInfo data eda regression report
+
+report: report/report.Rmd regression eda function 
 	Rscript -e "library(rmarkdown); render('report/report.Rmd', 'pdf_document')"
 
-eda: code/scripts/eda-script.R data/Advertising.csv
+eda: data code/scripts/eda-script.R
 	Rscript code/scripts/eda-script.R
 
-regression: code/scripts/regression-script.R data/Advertising.csv
+regression: code/scripts/regression-script.R data
 	Rscript code/scripts/regression-script.R
 
 data:
-	data/curl -O http://www-bcf.usc.edu/~gareth/ISL/Advertising.csv
+	cd data && curl -O http://www-bcf.usc.edu/~gareth/ISL/Advertising.csv
 
 tests: code/test-that.R code/tests/test-regression.R
-	Rscript code/test-that.R code/tests/test-regression.R
+	Rscript code/test-that.R 
 
-sessionInfo: session-info.txt
-	Rscript session-info.txt
+sessionInfo: code/scripts/session-info-script.R
+	Rscript code/scripts/session-info-script.R
 
 function: code/functions/regression-functions.R
 	Rscript code/functions/regression-functions.R
 
 clean:
-	rm -f report/report.pdf report/report.html
+	rm -f report/$(OUTPUT_PDF) report/$(OUTPUT_HTML)

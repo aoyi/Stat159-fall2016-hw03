@@ -61,7 +61,7 @@ The correlation matrix indicates that the correlation between advertising budget
 
 ```{r results= 'asis', echo = FALSE}
 data_set <- read.csv("../data/Advertising.csv")
-load("../data/function.RData")
+source("../code/functions/regression-functions.R")
 
 Statistics <- c("Residual Standard Error", "R-square", "F-Statistics")
 RSE <- format(residual_std_error(multi_reg, data_set$Sales), digits = 4)
