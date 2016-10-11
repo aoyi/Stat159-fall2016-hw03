@@ -55,6 +55,8 @@ To reproduce the report:
 
 2. Run `make` in the terminal to regenerate all the output files, graphs and report. 
 
+3. Run `make tests` to test functions included in code/functions/regression_functions.R
+
 ## Contributor
 
 Aoyi Shan

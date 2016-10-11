@@ -2,19 +2,19 @@
 
 .PHONY: data all clean
 
-OUTPUT_PDF = report.pdf
-OUTPUT_HTML = report.html
+eda_script = code/scripts/eda-script.R
+regression_script = code/scripts/regression-script.R
 
 all: clean sessionInfo data eda regression report
 
 report: report/report.Rmd regression eda function 
 	Rscript -e "library(rmarkdown); render('report/report.Rmd', 'pdf_document')"
 
-eda: data code/scripts/eda-script.R
-	Rscript code/scripts/eda-script.R
+eda: data $(eda_script)
+	Rscript $(eda_script)
 
-regression: code/scripts/regression-script.R data
-	Rscript code/scripts/regression-script.R
+regression: $(regression_script) data
+	Rscript $(regression_script)
 
 data:
 	cd data && curl -O http://www-bcf.usc.edu/~gareth/ISL/Advertising.csv
@@ -23,10 +23,10 @@ tests: code/test-that.R code/tests/test-regression.R
 	Rscript code/test-that.R 
 
 sessionInfo: code/scripts/session-info-script.R
-	Rscript code/scripts/session-info-script.R
+	Rscript $<
 
 function: code/functions/regression-functions.R
-	Rscript code/functions/regression-functions.R
+	Rscript $<
 
 clean:
-	rm -f report/$(OUTPUT_PDF) report/$(OUTPUT_HTML)
+	rm -f report/report.pdf
