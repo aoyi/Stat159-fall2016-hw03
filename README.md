@@ -49,13 +49,32 @@ stat159-fall2016-hw03/
 
 ## Reproduction Steps
 
-To reproduce the report:
+Install R packages, `xtable` and `testthat`:
+
+```
+install.packages("xtable")
+install.packages("testthat")
+````
+
+To reproduce the analysis:
 
 1. Clone this project
 
-2. Run `make` in the terminal to regenerate all the output files, graphs and report. 
+2. Use `cd` command in the terminal to enter the directory stat159-fall2016-hw03.
 
-3. Run `make tests` to test functions included in `code/functions/regression_functions.R`.
+3. Run `make` in the terminal to regenerate all the output files, graphs and report. 
+
+  Can also reproduce the result step by step by running:
+ 
+  `make data` to download the data Advertising.csv in data folder. 
+  
+  `make eda` to perform elementary data analysis to obtain correlation matrix and histograms.
+ 
+  `make regression` to run multiple regression and generate corresponding regression objects and regression plots. 
+  
+  `make report` to reproduce the report
+
+3. Run `make tests` to test regression functions included in `code/functions/regression_functions.R`.
 
 ## Contributor
 
@@ -69,6 +88,6 @@ Email: aoyi95@berkeley.edu
 
 ## License
 
-All media contents are licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)
+All media contents are licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
 
-All code is license under [BSD-2.0](https://opensource.org/licenses/BSD-2-Clause)
+All code is license under [BSD-2.0](https://opensource.org/licenses/BSD-2-Clause).
