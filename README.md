@@ -55,7 +55,7 @@ To reproduce the report:
 
 2. Run `make` in the terminal to regenerate all the output files, graphs and report. 
 
-3. Run `make tests` to test functions included in code/functions/regression_functions.R
+3. Run `make tests` to test functions included in `code/functions/regression_functions.R`.
 
 ## Contributor
 
@@ -69,4 +69,6 @@ Email: aoyi95@berkeley.edu
 
 ## License
 
-This work is licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)
+All media contents are licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/)
+
+All code is license under [BSD-2.0](https://opensource.org/licenses/BSD-2-Clause)
