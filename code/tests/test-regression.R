@@ -1,9 +1,6 @@
 library(testthat)
 
 source("../functions/regression-functions.R")
-lm(mpg ~ disp + hp, data = mtcars)
-
-mtcars
 
 context("Test for residual sum of squares")
 
@@ -11,7 +8,7 @@ test_that("RSS works as expected", {
   x <- lm(mpg ~ disp + hp, data = mtcars)
   y <- mtcars$mpg
   expect_gt(residual_sum_squares(x, y), 0)
-  expect_equal(round(residual_sum_squares(x, y), digits = 2), ***NEED TO FILL IN***)
+  expect_equal(round(residual_sum_squares(x, y), digits = 2), round(sum((summary(x)$residuals)^2), digits = 2))
   expect_length(residual_sum_squares(x, y), 1)
   expect_type(residual_sum_squares(x, y), 'double')
 })
@@ -21,8 +18,9 @@ context("Test for total sum of squares")
 test_that("TSS works as expected", {
   x <- lm(mpg ~ disp + hp, data = mtcars)
   y <- mtcars$mpg
+  target_value <- round(residual_sum_squares(x, y), digits = 2) + sum((x$fitted.values - mean(y))^2)
   expect_gt(total_sum_squares(x, y), 0)
-  expect_equal(round(total_sum_squares(x, y), digits = 2), ***NEED TO FILL IN***)
+  expect_equal(round(total_sum_squares(x, y), digits = 0), round(target_value, digits = 0))
   expect_length(total_sum_squares(x, y), 1)
   expect_type(total_sum_squares(x, y), 'double')
 })

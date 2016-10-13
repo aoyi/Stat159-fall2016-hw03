@@ -1,11 +1,11 @@
 # Run "make" to reproduce report
 
-.PHONY: data all clean
+.PHONY: data all clean function tests
 
 eda_script = code/scripts/eda-script.R
 regression_script = code/scripts/regression-script.R
 
-all: clean sessionInfo data eda regression report
+all: sessionInfo data eda regression report
 
 report: report/report.Rmd regression eda function 
 	Rscript -e "library(rmarkdown); render('report/report.Rmd', 'pdf_document')"
