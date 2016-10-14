@@ -8,7 +8,7 @@ test_that("RSS works as expected", {
   x <- lm(mpg ~ disp + hp, data = mtcars)
   y <- mtcars$mpg
   expect_gt(residual_sum_squares(x, y), 0)
-  expect_equal(round(residual_sum_squares(x, y), digits = 2), round(sum((summary(x)$residuals)^2), digits = 2))
+  expect_equal(round(residual_sum_squares(x, y), digits = 2), round(sum(x$residuals^2), digits = 2))
   expect_length(residual_sum_squares(x, y), 1)
   expect_type(residual_sum_squares(x, y), 'double')
 })
@@ -18,7 +18,7 @@ context("Test for total sum of squares")
 test_that("TSS works as expected", {
   x <- lm(mpg ~ disp + hp, data = mtcars)
   y <- mtcars$mpg
-  target_value <- round(residual_sum_squares(x, y), digits = 2) + sum((x$fitted.values - mean(y))^2)
+  target_value <- sum((mtcars$mpg - mean(mtcars$mpg))^2)
   expect_gt(total_sum_squares(x, y), 0)
   expect_equal(round(total_sum_squares(x, y), digits = 0), round(target_value, digits = 0))
   expect_length(total_sum_squares(x, y), 1)
@@ -41,10 +41,9 @@ context("Test for F Statistic")
 test_that("F-Statistic works as expected", {
   x <- lm(mpg ~ disp + hp, data = mtcars)
   y <- mtcars$mpg
-  z <- 2
-  expect_gt(f_statistic(x, y, z), 0)
-  expect_equal(round(f_statistic(x, y, z), digits = 2), unname(round(summary(x)$fstatistic[1], digits = 2)))
-  expect_type(f_statistic(x, y, z), 'double')
+  expect_gt(f_statistic(x, y), 0)
+  expect_equal(round(f_statistic(x, y), digits = 2), unname(round(summary(x)$fstatistic[1], digits = 2)))
+  expect_type(f_statistic(x, y), 'double')
 })
 
 context("Test for RSE")

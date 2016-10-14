@@ -15,7 +15,8 @@ residual_sum_squares <- function(reg_obj, data) {
 # The returned output is the corresponding value of TSS. 
 
 total_sum_squares  <- function(reg_obj, data) {
-  sum((data - mean(data))^2)
+  ESS <- sum((predict(reg_obj) - mean(data))^2)
+  residual_sum_squares(reg_obj, data) + ESS
 }
 
 # R-Squared Function
@@ -33,9 +34,10 @@ r_squared  <- function(reg_obj, data) {
 # The function takes three inputs, a regression object, which is the output of lm() function, the observed values and number of predictor used in the multiple linear regression. 
 # The returned output is the correponding f statistics.
 
-f_statistic <- function(reg_obj, data, num_predictor) {
+f_statistic <- function(reg_obj, data) {
+  p <- length(reg_obj$coefficients) - 1
   RSS <- residual_sum_squares(reg_obj, data)
-  ((total_sum_squares(reg_obj, data) - RSS)/num_predictor) / (RSS/(length(data)-num_predictor-1))
+  ((total_sum_squares(reg_obj, data) - RSS)/p) / (RSS/(length(data)-p-1))
 }
 
 # Residual Standard Error Function
