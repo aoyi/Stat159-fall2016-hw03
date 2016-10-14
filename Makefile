@@ -1,6 +1,6 @@
 # Run "make" to reproduce report
 
-.PHONY: data all clean function tests
+.PHONY: all report eda regression data tests sessionInfo function clean
 
 eda_script = code/scripts/eda-script.R
 regression_script = code/scripts/regression-script.R
