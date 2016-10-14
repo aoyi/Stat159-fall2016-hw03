@@ -44,7 +44,8 @@ f_statistic <- function(reg_obj, data, num_predictor) {
 # The returned output is the corresponding value of RSE. 
 
 residual_std_error <- function(reg_obj, data) {
-  sqrt(residual_sum_squares(reg_obj, data)/(length(data) - 3))
+  p <- length(reg_obj$coefficients) - 1
+  sqrt(residual_sum_squares(reg_obj, data)/(length(data) - p - 1))
 }
 
 
