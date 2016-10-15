@@ -1,6 +1,6 @@
 # Run "make" to reproduce report
 
-.PHONY: all report eda regression data tests sessionInfo function clean
+.PHONY: all report eda regression data tests sessionInfo clean
 
 # Set variables
 eda_script = code/scripts/eda-script.R
@@ -10,7 +10,7 @@ regression_script = code/scripts/regression-script.R
 all: sessionInfo data eda regression report
 
 # Report target: Produce reports by compiling Rmarkdown to pdf 
-report: report/report.Rmd regression eda function 
+report: report/report.Rmd regression eda 
 	Rscript -e "library(rmarkdown); render('report/report.Rmd', 'pdf_document')"
 
 # Eda target: Run eda script to calculate summary statistics
@@ -31,10 +31,6 @@ tests: code/test-that.R code/tests/test-regression.R
 
 # SessionInfo target: Run sessioninfo script
 sessionInfo: code/scripts/session-info-script.R
-	Rscript $<
-
-# Function target: Run function script to load regression functions
-function: code/functions/regression-functions.R
 	Rscript $<
 
 # Clean target: Delete report.pdf
