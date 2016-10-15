@@ -6,8 +6,9 @@ multi_reg <- lm(Sales ~ TV + Radio + Newspaper, data = data_set)
 lm_sales_TV <- lm(Sales ~ TV, data = data_set)
 lm_sales_Radio <- lm(Sales ~ Radio, data = data_set)
 lm_sales_Newspaper <- lm(Sales ~ Newspaper, data = data_set)
-save(multi_reg, lm_sales_Newspaper, lm_sales_Radio, lm_sales_TV, file = "data/regression.RData")
-summary(multi_reg)
+summ_stat <- summary(multi_reg)
+save(multi_reg, lm_sales_Newspaper, lm_sales_Radio, lm_sales_TV, summ_stat, file = "data/regression.RData")
+
 
 png("images/residual-plot.png")
 plot(multi_reg, which = 1)
