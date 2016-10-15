@@ -41,7 +41,7 @@ histogram_generator(data_set$Newspaper, "Newspaper")
 histogram_generator(data_set$Radio, "Radio")
 histogram_generator(data_set$Sales, "Sales")
 
-png("images/scatterplot_matrix.png")
+png("images/scatterplot-matrix.png")
 pairs(data_set[2:5])
 dev.off()
 
