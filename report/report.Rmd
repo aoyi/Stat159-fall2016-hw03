@@ -66,7 +66,7 @@ source("../code/functions/regression-functions.R")
 Statistics <- c("Residual Standard Error", "R-square", "F-Statistics")
 RSE <- format(residual_std_error(multi_reg, data_set$Sales), digits = 4)
 R_square <- format(r_squared(multi_reg, data_set$Sales), digits = 3)
-f <- format(f_statistic(multi_reg, data_set$Sales, 3), digits = 4)
+f <- format(f_statistic(multi_reg, data_set$Sales), digits = 4)
 
 Value <- c(RSE, R_square, f)
 print(xtable(data.frame(Statistics, Value), caption = "Regression Quality Statistics"))

@@ -90,4 +90,4 @@ Email: aoyi95@berkeley.edu
 
 All media contents are licensed under a [Creative Commons Attribution-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-sa/4.0/).
 
-All code is license under [BSD-2.0](https://opensource.org/licenses/BSD-2-Clause).
+All code is licensed under [BSD-2.0](https://opensource.org/licenses/BSD-2-Clause).
