@@ -47,7 +47,7 @@ test_that("F-Statistic works as expected", {
 })
 
 context("Test for RSE")
-test_that("F-Statistic works as expected", {
+test_that("RSE works as expected", {
   x <- lm(mpg ~ disp + hp, data = mtcars)
   y <- mtcars$mpg
   expect_gt(residual_std_error(x, y), 0)
